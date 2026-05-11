@@ -335,7 +335,7 @@ impl PlatformAdapter for WindowsAdapter {
         unsafe {
             // Use std::mem::transmute_copy to reconstruct IUIAutomationElement from raw pointer
             let raw = handle.as_raw() as *mut std::ffi::c_void;
-            let element: IUIAutomationElement = std::mem::transmute_copy(&raw);
+            let element = IUIAutomationElement::from_raw(raw as *mut _);
 
             match action {
                 Action::Click | Action::DoubleClick | Action::RightClick => {
