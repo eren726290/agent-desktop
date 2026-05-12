@@ -26,9 +26,10 @@ use windows::Win32::System::DataExchange::{
     OpenClipboard, CloseClipboard, EmptyClipboard, GetClipboardData, SetClipboardData,
 };
 use windows::Win32::System::Memory::{GlobalAlloc, GlobalLock, GlobalUnlock, GMEM_MOVEABLE};
-use windows::Win32::System::SystemServices::CF_UNICODETEXT;
+use windows::Win32::System::DataExchange::CF_UNICODETEXT;
 use windows::Win32::UI::Accessibility::{
     IUIAutomation, IUIAutomationElement,
+    UIA_CONTROLTYPE_ID,
     UIA_ButtonControlTypeId, UIA_EditControlTypeId,
     UIA_CheckBoxControlTypeId, UIA_HyperlinkControlTypeId,
     UIA_ListControlTypeId, UIA_ListItemControlTypeId,
@@ -111,22 +112,22 @@ impl WindowsAdapter {
         Ok(node)
     }
 
-    fn uia_role(&self, id: i32) -> String {
+    fn uia_role(&self, id: UIA_CONTROLTYPE_ID) -> String {
         match id {
-            UIA_ButtonControlTypeId     => "button",
-            UIA_EditControlTypeId       => "textfield",
-            UIA_CheckBoxControlTypeId   => "checkbox",
-            UIA_HyperlinkControlTypeId  => "link",
-            UIA_ListItemControlTypeId   => "cell",
-            UIA_ListControlTypeId       => "list",
-            UIA_ComboBoxControlTypeId   => "combobox",
-            UIA_TreeItemControlTypeId   => "treeitem",
-            UIA_TreeControlTypeId       => "tree",
-            UIA_TabItemControlTypeId    => "tab",
-            UIA_TabControlTypeId        => "tablist",
-            UIA_SliderControlTypeId     => "slider",
+            UIA_ButtonControlTypeId      => "button",
+            UIA_EditControlTypeId        => "textfield",
+            UIA_CheckBoxControlTypeId    => "checkbox",
+            UIA_HyperlinkControlTypeId   => "link",
+            UIA_ListItemControlTypeId    => "cell",
+            UIA_ListControlTypeId        => "list",
+            UIA_ComboBoxControlTypeId    => "combobox",
+            UIA_TreeItemControlTypeId    => "treeitem",
+            UIA_TreeControlTypeId        => "tree",
+            UIA_TabItemControlTypeId     => "tab",
+            UIA_TabControlTypeId         => "tablist",
+            UIA_SliderControlTypeId      => "slider",
             UIA_ProgressBarControlTypeId => "progressbar",
-            _                           => "group",
+            _                            => "group",
         }.to_string()
     }
 }
