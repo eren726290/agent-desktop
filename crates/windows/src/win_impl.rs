@@ -269,11 +269,17 @@ impl PlatformAdapter for WindowsAdapter {
                     continue;
                 }
             }
+            let exe = unsafe { pid_exe(pid) }.unwrap_or_default();
+            let app_name = std::path::Path::new(&exe)
+                .file_stem()
+                .map(|s| s.to_string_lossy().into_owned())
+                .unwrap_or_else(|| title.clone());
+
             result.push(WindowInfo {
                 id: format!("w-{}", hwnd.0 as usize),
                 title,
                 pid: pid as i32,
-                app: String::new(),
+                app: app_name,
                 bounds: None,
                 is_focused: false,
             });
@@ -287,11 +293,17 @@ impl PlatformAdapter for WindowsAdapter {
             if hwnd.0.is_null() { return Ok(None); }
             let title = hwnd_title(hwnd).unwrap_or_default();
             let pid = hwnd_pid(hwnd);
+            let exe = unsafe { pid_exe(pid) }.unwrap_or_default();
+            let app_name = std::path::Path::new(&exe)
+                .file_stem()
+                .map(|s| s.to_string_lossy().into_owned())
+                .unwrap_or_else(|| title.clone());
+
             Ok(Some(WindowInfo {
                 id: format!("w-{}", hwnd.0 as usize),
                 title,
                 pid: pid as i32,
-                app: String::new(),
+                app: app_name,
                 bounds: None,
                 is_focused: true,
             }))
