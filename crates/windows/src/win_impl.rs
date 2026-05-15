@@ -391,7 +391,7 @@ impl PlatformAdapter for WindowsAdapter {
     fn get_clipboard(&self) -> Result<String, AdapterError> {
         unsafe {
             OpenClipboard(None).map_err(|e| AdapterError::not_supported(&e.to_string()))?;
-            let handle = GetClipboardData(CF_UNICODETEXT.0 as u32)
+            let handle = GetClipboardData(CF_UNICODETEXT)
                 .map_err(|e| { let _ = CloseClipboard(); AdapterError::not_supported(&e.to_string()) })?;
             let ptr = handle.0 as *const u16;
             let mut len = 0;
@@ -412,7 +412,7 @@ impl PlatformAdapter for WindowsAdapter {
             let dst = GlobalLock(hmem) as *mut u16;
             std::ptr::copy_nonoverlapping(wide.as_ptr(), dst, wide.len());
             let _ = GlobalUnlock(hmem);
-            SetClipboardData(CF_UNICODETEXT.0 as u32, HANDLE(hmem.0))
+            SetClipboardData(CF_UNICODETEXT, HANDLE(hmem.0))
                 .map_err(|e| { let _ = CloseClipboard(); AdapterError::not_supported(&e.to_string()) })?;
             let _ = CloseClipboard();
         }
