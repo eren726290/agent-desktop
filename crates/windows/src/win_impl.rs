@@ -26,7 +26,7 @@ use windows::Win32::System::DataExchange::{
     OpenClipboard, CloseClipboard, EmptyClipboard, GetClipboardData, SetClipboardData,
 };
 use windows::Win32::System::Memory::{GlobalAlloc, GlobalLock, GlobalUnlock, GMEM_MOVEABLE};
-use windows::Win32::System::DataExchange::CF_UNICODETEXT;
+const CF_UNICODETEXT: u32 = 13;
 use windows::Win32::UI::Accessibility::{
     IUIAutomation, IUIAutomationElement,
     UIA_CONTROLTYPE_ID,
